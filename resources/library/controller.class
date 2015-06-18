@@ -1,8 +1,121 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
+
+class controller
+{
+	
+	protected $parameter; 
+	protected $page;
+	protected $posted;
+	
+//==============================================================================================================================	
+	
+	public function handleRequest()
+	{
+                
+		$this->parameter=$this->getParameter('page');
+		$this->posted=($_SERVER['REQUEST_METHOD'] == 'POST');
+		$this->createPage();
+		$this->showPage();
+		
+	}
+//===============================================================================================================================
+
+	protected function getParameter($parameternaam)
+	{
+		
+		if($this->posted && isset($_POST[$parameternaam]) )
+				
+			{
+				 return $_POST[$parameternaam]; 
+			}		
+								
+		
+		else 
+		{
+			if(isset($_GET[$parameternaam]))
+			{
+				 return $_GET[$parameternaam];
+			}
+		
+		}
+		return "Onbekend";
+	}
+//=================================================================================================================================
+	protected function createPage() ###de createPage is enkel om de pagina te maken, contents etc worden in de aparte pagina classes defined
+		{
+			  
+			switch($this->parameter)
+			{
+				case 'invoeren':
+					require_once('/inputPage.class.php');
+					$this->page= new inputPage();
+				break;
+				
+				case 'wijzigen':
+					require_once('/editPage.class.php');
+					$this->page= new editPage();
+				break;
+				
+				case 'print':
+					require_once('printPage.class.php');
+					$this->page= new printPage();
+				break;
+			
+				default:
+					
+                                        require_once('/loginpage.class.php');
+					$this->page = new loginPage();
+				break;
+			}
+		}	
+	
+//=============================================================================================================================
+	
+	protected function showPage()
+	{
+		$this->page->show();
+				
+	}	
+	
+//=========================================================================================================================	
+	protected function checkLoggedin()
+	{
+	
+	}
+//============================================================================================================================
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+} ###End of class
 
